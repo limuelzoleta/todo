@@ -35,9 +35,18 @@ describe("TodoForm", () => {
     expect(priorityToggle.checked).toBe(true);
   });
 
-  it("should submit form on click", () => {
+  it("should not submit form on click when input is empty", () => {
     renderForm(onSubmit);
     const submitButton: HTMLButtonElement = screen.getByTitle("submitButton");
+    fireEvent.click(submitButton);
+    expect(onSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  it("should submit form on clich when input has value", () => {
+    renderForm(onSubmit);
+    const submitButton: HTMLButtonElement = screen.getByTitle("submitButton");
+    const taskField = screen.getByTitle("taskName");
+    fireEvent.change(taskField, { target: { value: "test value" } });
     fireEvent.click(submitButton);
     expect(onSubmit).toHaveBeenCalled();
     expect(onSubmit).toHaveBeenCalledTimes(1);
